@@ -1,9 +1,11 @@
 package group.springsecurityproject.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity //spring security 필터(여기서 만드는 SecurityConfig)가 spring 필터 체인에 등록이 됨
@@ -31,5 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin() ////보안 검증은 formLogin방식으로 하겠다.
             .loginPage("/login"); //정의된 로그인 페이지, 인증이 필요할 때 이동하는 페이지 설정하는 api입니다
         
+    }
+   @Bean//bean으로 등록- 해당 메서드의 리턴되는 오브젝트를 IOC로 등록해줌, 그래서 다른 애들도 쓸 수 있음
+   public BCryptPasswordEncoder encodePwd(){
+        return new BCryptPasswordEncoder();
     }
 }
