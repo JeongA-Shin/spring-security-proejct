@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository //얘가 없어도 IOC가 됨. 왜냐면 JpaRepository를 상속했기 때문에
 public interface UserRepository extends JpaRepository<User,Integer> {
 
+    public User findByUsername(String username); // jpa 쿼리 메서드
 }
