@@ -31,7 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // 이제 만약 권한이 없는 페이지로 요청이 들어오면, 로그인 페이지로 자동 전환이 되도록 설정해줌, 보안 검증을 formLogin으로 설정함
             .and()
             .formLogin() ////보안 검증은 formLogin방식으로 하겠다.
-            .loginPage("/login"); //정의된 로그인 페이지, 인증이 필요할 때 이동하는 페이지 설정하는 api입니다
+            .loginPage("/login") //정의된 로그인 페이지, 인증이 필요할 때 이동하는 페이지 설정하는 api입니다
+            .loginProcessingUrl("/loginProc") //로그인 요청이 오면(/loginProc로 요청이 오면)
+            // 시큐리티가 대신 낚아채서 로그인을 진행해줌.
+            // 로그인 요청은 login.html 참고, 로그인 진행 과정은 auth/PrincipalDetails 와 auth/PrincipalDetailsService순으로 참고
+             // 따라서 컨트롤러에 따로 /loginProc를 해주지 않아도 됨
+            .defaultSuccessUrl("/"); //로그인 성공시에는 indexPage로 가게 함
+        
         
     }
    @Bean//bean으로 등록- 해당 메서드의 리턴되는 오브젝트를 IOC로 등록해줌, 그래서 다른 애들도 쓸 수 있음
