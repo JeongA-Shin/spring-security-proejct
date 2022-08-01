@@ -1,12 +1,21 @@
 package group.springsecurityproject.controller;
 
+import group.springsecurityproject.model.User;
+import group.springsecurityproject.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller //주로 View를 반환하기 위해 사용 // RestController의 주용도는 Json 형태로 객체 데이터를 반환하는 것입니다.
+@RequiredArgsConstructor
 public class IndexController {
+    
+    private final UserRepository userRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder; //SecurityConfig에서 bean으로 등록했기 때문에 이게 가능함
     @GetMapping
     public String index(){
         return "index"; //mustache
@@ -38,13 +47,24 @@ public class IndexController {
         return "login";
     }
     
-    @GetMapping("/join")
-    public String join(){
-        return "join";
+    //실제 join로직을 처리함
+    @PostMapping("/join")
+    public String join(User user){
+        System.out.println(user);
+        user.setRole("ROLE_USER"); // 어떤 권한인지 부여
+        //비밀번호 암호화
+        String rawPwd = user.getPassword();
+        String encPwd = bCryptPasswordEncoder.encode(rawPwd);
+        user.setPassword(encPwd);
+        
+        userRepository.save(user); //회원으로 등록 . 위의 비밀번호 암호화 과정을 반드시 거쳐야 함
+        return "redirect:/login";
     }
     
-    @GetMapping("/joinProc")
-    public @ResponseBody String joinProc(){
-        return "회원가입 완료됨";
+    //회원가입창으로 감
+    @GetMapping("/joinForm")
+    public String joinForm(){
+        return "joinForm";
     }
+    
 }
