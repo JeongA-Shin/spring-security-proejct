@@ -2,6 +2,7 @@ package group.springsecurityproject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -9,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity //spring security 필터(여기서 만드는 SecurityConfig)가 spring 필터 체인에 등록이 됨
+@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true) //secured 어노테이션 활성화, preAuthorize 어노테이션 활성화
+// 특정 컨트롤러 메서드(즉 특정 url 요청)에 대해 간단하게 권한별로 처리하고 싶을 때 - 굳이 config의 antmatchers로 하지 않고 - indexContoller에 예시 있음
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override

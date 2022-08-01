@@ -3,6 +3,8 @@ package group.springsecurityproject.controller;
 import group.springsecurityproject.model.User;
 import group.springsecurityproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,6 +67,13 @@ public class IndexController {
     @GetMapping("/joinForm")
     public String joinForm(){
         return "joinForm";
+    }
+    //@PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN)")
+    @Secured("ROLE_ADMIN") //와 //@PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN)")
+    // 특정 메서드에 대해 간단하게 권한별로 처리하고 싶을 때 - 굳이 config의 antmatchers로 하지 않고
+    @GetMapping("/info")
+    public @ResponseBody String info(){
+        return "개인정보";
     }
     
 }
