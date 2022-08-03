@@ -21,7 +21,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     private final UserRepository userRepository; //컴포지션
     
     /**
-     * 
+     * 해당 메서드가 실행 후 종료시 @AuthenticationPrincipal 어노테이션이 활성화됨 (만들어짐) == authentication 객체가 생성됨
      * @param username 로그인 요청시 form에서 username 네이밍이 일치해야 함
      * @return
      * @throws UsernameNotFoundException
@@ -33,7 +33,7 @@ public class PrincipalDetailsService implements UserDetailsService {
             return new PrincipalDetails(userEntity); // UserDetails 안에는 유저 정보(유저 객체)가 들어가야 함.
             // 그리고 UserDetails 객체가 생성되면(리턴되면) 시큐리티가 자동으로 얘를 authentication으로 감쌈
             // 결론적으로 (자동으로)authentication이 만들어짐
-            // 그리고 얘는 자동으로 security session에 담김
+            // 그리고 해당 유저정보는 자동으로 security session에 담김
         }
         return null; //없다면
     }
